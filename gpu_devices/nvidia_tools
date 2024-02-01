@@ -8,6 +8,7 @@ class Nvidia():
     def __init__(self):
         """Contstructor"""
         self.nvidia_instance = nvidia_smi.getInstance()
+        self.handle =
 
     
     def query_memory(self):
@@ -25,3 +26,7 @@ class Nvidia():
 
         return f'Rack contains {device_count} GPUs'
     
+    def get_utilization_rates(self):
+        self.nvidia_instance.nvmlDeviceGetUtilizationRates(nvmlUnitGetHandleByIndex(0))
+
+    def GetECCStr(handle)
