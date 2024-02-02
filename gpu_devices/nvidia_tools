@@ -1,5 +1,6 @@
 from pynvml import *
 from pynvml.smi import *
+import pynvml
 import subprocess
 
 class Nvidia():
@@ -7,10 +8,12 @@ class Nvidia():
 
     def __init__(self):
         """Contstructor"""
-        self.nvidia_instance = nvidia_smi.getInstance()
-        self.handle =
+        try:
+            self.nvidia_instance = nvidia_smi.getInstance()
+        except pynvml.NVMLError as error:
+            print(f'{error}')
 
-    
+
     def query_memory(self):
         """Method used to query nvidia device memory"""
         self.nvidia_instance.DeviceQuery('memory.free, memory.total')
@@ -20,13 +23,17 @@ class Nvidia():
         driver_version = nvmlSystemGetDriverVersion()
         return f'Device Driver Firmware: {driver_version}'
 
-    def get_device_count():
+    def get_device_count(self):
         """Getter method used to get GPU device count from system"""
         device_count = nvmlDeviceGetCount()
 
         return f'Rack contains {device_count} GPUs'
     
     def get_utilization_rates(self):
-        self.nvidia_instance.nvmlDeviceGetUtilizationRates(nvmlUnitGetHandleByIndex(0))
+        """Method used to get GPU utilization"""
+        device_count = self.get_device_count()
+        for i in range(device_count):
+            handle = self.nvidia_instance.nvmlUnitGetHandleByIndex(i)
+            utilization = self.nvidia_instance.nvmlDeviceGetUtilizationRates(handle)
 
     def GetECCStr(handle)
