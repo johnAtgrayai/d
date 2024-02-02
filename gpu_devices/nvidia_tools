@@ -9,9 +9,13 @@ class Nvidia():
     def __init__(self):
         """Contstructor"""
         try:
+            # Initialize NVML
+            pynvml.nvmlInit()
             self.nvidia_instance = nvidia_smi.getInstance()
         except pynvml.NVMLError as error:
             print(f'{error}')
+        finally:
+            pynvml.nvmlShutdown()
 
 
     def query_memory(self):
@@ -29,11 +33,26 @@ class Nvidia():
 
         return f'Rack contains {device_count} GPUs'
     
-    def get_utilization_rates(self):
+    def get_utilization_rates(self, handle):
         """Method used to get GPU utilization"""
-        device_count = self.get_device_count()
-        for i in range(device_count):
-            handle = self.nvidia_instance.nvmlUnitGetHandleByIndex(i)
-            utilization = self.nvidia_instance.nvmlDeviceGetUtilizationRates(handle)
+        utilization = self.nvidia_instance.nvmlDeviceGetUtilizationRates(handle)
 
-    def GetECCStr(handle)
+        return utilization
+
+    def get_gpu_ecc_errors(self, handle):
+        """Method used to get ECC errors from GPU"""
+        ecc_mode = pynvml.nvmlDeviceGetEccMode(handle)
+        if ecc_mode == pynvml.NVML_FEATURE_ENABLED:
+            ecc_counts = pynvml.nvmlDeviceGetDetailedEccErrors(handle)
+        else:
+            print("ECC not supported on this device")
+        return ecc_counts
+
+    def get_handles(self):
+        """Method used to return handle"""
+        device_count = self.get_device_count()
+        handles= list()
+        for i in range(device_count):
+                handles.append(self.nvidia_instance.nvmlUnitGetHandleByIndex(i))
+        return handles
+            
