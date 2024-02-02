@@ -55,4 +55,8 @@ class Nvidia():
         for i in range(device_count):
                 handles.append(self.nvidia_instance.nvmlUnitGetHandleByIndex(i))
         return handles
+    
+    def close_event(self):
+        """Method used to shutdown NVML"""
+        pynvml.nvmlShutdown()
             
