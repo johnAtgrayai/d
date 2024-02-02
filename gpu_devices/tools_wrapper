@@ -13,7 +13,15 @@ class FurMarkCLI:
         self.msaa = msaa
         self.iterations = iterations
 
+class PassMarkCLI:
 
+    def __init__(self):
+        """Constructor"""
+
+class PCMark:
+
+    def __init__(self):
+        """Constructor"""
 
 
 
