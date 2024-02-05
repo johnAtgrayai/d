@@ -11,6 +11,7 @@ class Nvidia():
         try:
             # Initialize NVML
             pynvml.nvmlInit()
+            self.pynvml = pynvml()
             self.nvidia_instance = nvidia_smi.getInstance()
         except pynvml.NVMLError as error:
             print(f'{error}')
@@ -35,7 +36,7 @@ class Nvidia():
     
     def get_utilization_rates(self, handle):
         """Method used to get GPU utilization"""
-        utilization = self.nvidia_instance.nvmlDeviceGetUtilizationRates(handle)
+        utilization = self.nvidia_instance.nvmDeviceGetUtilizationRates(handle)
         gpu_utilization = utilization.gpu
         memory_utilization = utilization.memory
 
@@ -92,8 +93,27 @@ class Nvidia():
         free_memory = memory_info.free / (1024 ** 2)
         used_memory = memory_info.used / (1024 ** 2)
 
-        return total_memory, free_memory, used_memory 
+        return total_memory, free_memory, used_memory
+    
+    def get_pci_information(self, handle):
+        """Method used to return PCI information """
+        pci_info = pynvml.nvmlDeviceGetPciInfo_v3(handle)
+        bus  = pci_info.bus
+        device_id = pci_info.device
+        domain = pci_info.domain
+        bus_type = pci_info.bustType
+        bus_id = pci_info.busId
+
+        return pci_info, bus, device_id, domain, bus_type, bus_id
+
+
+    def get_(self, handle):
+        """Method used to get clock faults NVIDIA GPU """
         
+        clock_faults = pynvml.nvmlDeviceGetCurrentClocksThrottleReasons(handle)
+        
+        return clock_faults
+    
     def close_event(self):
         """Method used to shutdown NVML"""
         pynvml.nvmlShutdown()

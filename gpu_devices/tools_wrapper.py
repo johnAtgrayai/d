@@ -13,15 +13,9 @@ class FurMarkCLI:
         self.msaa = msaa
         self.iterations = iterations
 
-class PassMarkCLI:
+class NvidaCLI:
 
-    def __init__(self):
-        """Constructor"""
-
-class PCMark:
-
-    def __init__(self):
-        """Constructor"""
+    def __init__(self, )
 
 
 
