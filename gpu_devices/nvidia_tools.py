@@ -36,8 +36,31 @@ class Nvidia():
     def get_utilization_rates(self, handle):
         """Method used to get GPU utilization"""
         utilization = self.nvidia_instance.nvmlDeviceGetUtilizationRates(handle)
+        gpu_utilization = utilization.gpu
+        memory_utilization = utilization.memory
 
-        return utilization
+        return gpu_utilization, memory_utilization
+
+    def get_power_info(self, handle):
+        """Method used to get power info from GPU"""
+        power_info = pynvml.nvmlDeviceGetPowerUsage(handle)
+        
+        return power_info / 1000.0
+
+    def get_clock_info(self, handle):
+        """Method used to get clock info"""
+        clock_info = pynvml.nvmlDeviceGetClockInfo(handle, pynvml.NVML_CLOCK_GRAPHICS)
+
+        return clock_info / 1000.0
+    
+    def get_fan_speed(self, handle):
+        """Method used to get fan speed of GPU"""
+        try:
+            fan_speed = pynvml.nvmlDeviceGetFanSpeed(handle)
+        except pynvml.NVMLError as error:
+            print(f"Error getting fan speed: {error}")
+            raise error
+        
 
     def get_gpu_ecc_errors(self, handle):
         """Method used to get ECC errors from GPU"""
@@ -55,7 +78,22 @@ class Nvidia():
         for i in range(device_count):
                 handles.append(self.nvidia_instance.nvmlUnitGetHandleByIndex(i))
         return handles
-    
+
+    def get_temperature(self, handle):
+        """Method used to get temeprature from GPU"""
+        temperature = pynvml.nvmlDeviceGetTemperature(handle, pynvml.NVML_TEMPERATURE_GPU)
+
+        return temperature 
+
+    def get_memory_info(self, handle):
+        """Method used to get memory info of GPU"""
+        memory_info = pynvml.nvmlDeviceGetMemoryInfo(handle)
+        total_memory = memory_info.total / (1024 ** 2)
+        free_memory = memory_info.free / (1024 ** 2)
+        used_memory = memory_info.used / (1024 ** 2)
+
+        return total_memory, free_memory, used_memory 
+        
     def close_event(self):
         """Method used to shutdown NVML"""
         pynvml.nvmlShutdown()
