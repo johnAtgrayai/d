@@ -1,5 +1,5 @@
 from gpu_devices.nvidia_tools import Nvidia
-
+import pandas as pd
 
 
 class NvidiaRunner:
@@ -24,6 +24,7 @@ class NvidiaRunner:
             ecc_counts = self.nvidia.get_gpu_ecc_errors(handle_n)
             total_memory, free_memory, used_memory = self.nvidia.get_memory_info(handle_n)
 
+        
 
 
 

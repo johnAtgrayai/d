@@ -20,5 +20,8 @@ if __name__ == """__main__""":
     args = argparse.ArgumentParser()
     args.add_argument("-e", "--ecc", type=str, help="Get ECC diagnostics from GPU")
     args.add_argument("-t", "--temp", type=str, help="Get temperature from GPU")
-    args.add_argument("-p", "--power", type=str, help"Get power consumption from GPU")
-    args.add_argument("")
+    args.add_argument("-w", "--power", type=str, help="Get power consumption from GPU")
+    args.add_argument("-p", "--pci", type=str, help="Get pci information from GPU")
+    parsed_args = args.parse_args()
+    ecc_info = parsed_args.ecc
+    

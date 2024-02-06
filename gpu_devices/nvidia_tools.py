@@ -107,7 +107,7 @@ class Nvidia():
         return pci_info, bus, device_id, domain, bus_type, bus_id
 
 
-    def get_(self, handle):
+    def get_clock_faults(self, handle):
         """Method used to get clock faults NVIDIA GPU """
         
         clock_faults = pynvml.nvmlDeviceGetCurrentClocksThrottleReasons(handle)
