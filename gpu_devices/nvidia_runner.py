@@ -5,10 +5,13 @@ from gpu_devices.nvidia_tools import Nvidia
 class NvidiaRunner:
     """Class usedd to run NVIDIA metrics"""
 
-    def __init__(self):
+    def __init__(self, ecc, temp, memory, ):
         """Constructor"""
         self.nvidia = Nvidia()
         self.handles = self.nvidia.get_handles()
+        self.ecc = ecc 
+        self.temp = temp
+        self.memory = memory
 
 
 
