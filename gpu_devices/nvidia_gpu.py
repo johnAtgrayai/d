@@ -53,6 +53,8 @@ class Nvidia():
         clock_info = pynvml.nvmlDeviceGetClockInfo(handle, pynvml.NVML_CLOCK_GRAPHICS)
 
         return clock_info / 1000.0
+
+    
     
     def get_fan_speed(self, handle):
         """Method used to get fan speed of GPU"""
@@ -86,7 +88,7 @@ class Nvidia():
 
         return temperature 
 
-    def get_memory_info(self, handle):
+    def get_gpu_video_memory_info(self, handle):
         """Method used to get memory info of GPU"""
         memory_info = pynvml.nvmlDeviceGetMemoryInfo(handle)
         total_memory = memory_info.total / (1024 ** 2)
