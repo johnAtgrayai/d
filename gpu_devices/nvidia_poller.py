@@ -1,4 +1,4 @@
-from gpu_devices.nvidia_tools import Nvidia
+from gpu_devices.nvidia_gpu import Nvidia
 import threading
 import concurrent.futures
 import logging
