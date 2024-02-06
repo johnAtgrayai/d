@@ -53,6 +53,7 @@ class Nvidia():
         clock_info = pynvml.nvmlDeviceGetClockInfo(handle, pynvml.NVML_CLOCK_GRAPHICS)
 
         return clock_info / 1000.0
+
     
     def get_fan_speed(self, handle):
         """Method used to get fan speed of GPU"""
