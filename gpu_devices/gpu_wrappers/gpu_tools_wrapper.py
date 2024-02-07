@@ -5,6 +5,7 @@ import json
 
 
 class FurMarkCLI:
+    """Class used for Furmark command line interface"""
 
     def __init__(self, height, width, msaa, iterations):
         """Constructor"""
@@ -13,9 +14,11 @@ class FurMarkCLI:
         self.msaa = msaa
         self.iterations = iterations
 
-class NvidaCLI:
+class Radeon:
+    """Class used for Radeon GPUs command line interface"""
 
-    def __init__(self, )
+    def __init__(self, height, width):
+        """Constructor"""
 
 
 

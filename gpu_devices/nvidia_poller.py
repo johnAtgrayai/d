@@ -1,9 +1,13 @@
-from gpu_devices.nvidia_gpu import Nvidia
 import threading
-import concurrent.futures
 import logging
 import time
+
+# Third Party Imports
 import pandas as pd
+
+# Local Imports
+from gpu_devices.gpu_wrappers.nvidia_gpu import Nvidia
+
 
 format = "%(asctime)s: %(message)s"
 logger = logging.basicConfig(format=format, level=logging.INFO, datefmt="%H:%M:%S")
@@ -11,19 +15,10 @@ logger = logging.basicConfig(format=format, level=logging.INFO, datefmt="%H:%M:%
 class NvidiaPoller:
     """Class usedd to run NVIDIA metrics"""
 
-    def __init__(self, polling_interval: int, collection_time: int, gpu_count: int):
+    def __init__(self):
         """Constructor"""
         self.nvidia = Nvidia()
-        self.polling_interval = polling_interval
-        self.collection_time = collection_time
-        self.gpu_count = gpu_count
-
-
-    def create_gpu_polling_thread(self):
-        """Method used to consumer thread"""
-        with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-            executor.map(self.countdown_timer, range(self.gpu_count))
-
+        self.handles = self.nvidia.get_handles()
 
 
     def collect_gpu_diagnostic_data(self):
@@ -32,26 +27,28 @@ class NvidiaPoller:
             clock_info = self.nvidia.get_clock_info(handle_n)
             temperature = self.nvidia.get_temperature(handle_n)
             ecc_counts = self.nvidia.get_gpu_ecc_errors(handle_n)
-            total_memory, free_memory, used_memory = self.nvidia.get_memory_info(handle_n)
-            time.sleep(self.polling_interval)
-    
-    def countdown_timer(self):
-        """Method used to count down time for how long GPU diagnostics are supposed to be collected"""
-        while self.collection_time > 0:
-            self.collection_time -= 1
-            self.collect_gpu_diagnostic_data()
+            total_memory, free_memory, used_memory = self.nvidia.get_gpu_video_memory_info(handle_n)
+            
+        return handle_n, clock_info, temperature, ecc_counts, total_memory, free_memory, used_memory
+
 
 
 
         
-
+def main():
+    """Main method"""
+    nvidia_poller = NvidiaPoller()
+    polling_thread = threading.Thread(target=nvidia_poller.collect_gpu_diagnostic_data())
+    polling_thread.daemon = True
+    polling_thread.start()
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Exiting GPU Diagnostics!")
 
 
 
 if __name__  == """__main__""":
-    try:
-        while True:
-            gpu_diagnostics = NvidiaPoller()
-            gpu_diagnostics.collect_diagnostic_data()
-    except KeyboardInterrupt:
-        print("Monitoring GPU!")
+    main()
+    

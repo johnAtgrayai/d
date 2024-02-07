@@ -22,11 +22,62 @@ class Nvidia():
     def query_memory(self):
         """Method used to query nvidia device memory"""
         self.nvidia_instance.DeviceQuery('memory.free, memory.total')
+    
+    def get_nvlink_utilization(self, handle):
+        """Method used to get NVLINK utilization"""
+        nvlink_utilization = nvml.nvmlDeviceGetNvLinkUtilizationCounter(handle)
+
+        return nvlink_utilization
+
+    def get_nvlink_error_counter(self, handle):
+        """Method used to get NVLINK error counter"""
+        nvlink_error_counter = nvml.nvmlDeviceGetNvLinkErrorCounter(handle)
+
+        return nvlink_error_counter
+    
+    def get_nvlink_state(self, handle):
+        """Method used to get NVLINK state"""
+        nvlink_state = nvml.nvmlDeviceGetNvLinkState(handle)
+
+        return nvlink_state
+
+    def get_nvlink_utilization_control(self, handle):
+        """Get NVLINK utilization control"""
+        nvlink_utilization_control = pynvml.nvmlDeviceGetNvLinkUtilizationControl(handle)
+
+        return nvlink_utilization_control
+    
+    def get_nvlink_power_threshold(self, handle):
+        """Method used to get NVLINK low power threshold"""
+        nvlink_power_threshold = pynvml.nvmlDeviceSetNvLinkDeviceLowPowerThreshold(handle)
+
+        return nvlink_power_threshold
+
+    
+    def get_process_count_from_gpu(self, handle):
+        """Method used to get process info from GPU"""
+        process_count = pynvml.nvmlDeviceGetComputeRunningProcesses_v3(handle)
+        
+        
+        return process_count
+    
+    def get_process_utilization(self, handle):
+        """Method used to get process utilization"""
+        process_utilization = pynvml.nvmlDeviceGetProcessUtilization(handle)
+
+        return process_utilization
 
     def get_driver_version():
         """Getter method used to get driver version"""
         driver_version = nvmlSystemGetDriverVersion()
-        return f'Device Driver Firmware: {driver_version}'
+        
+        return driver_version
+
+    def get_retired_pages(self, handle):
+        """Method used to get retired pages"""
+        retired_pages = pynvml.nvmlDeviceGetRetiredPages(handle)
+
+        return retired_pages
 
     def get_device_count(self):
         """Getter method used to get GPU device count from system"""
@@ -48,12 +99,39 @@ class Nvidia():
         
         return power_info / 1000.0
 
+    def get_performance_state(self, handle):
+        """Method used to get performance state of NVIDIA GPU"""
+        performance_state = pynvml.nvmlDeviceGetPerformanceState(handle)
+
+        return performance_state
+
+    def get_clock_throttle_reasons(self, handle):
+        """Method used to get GPU slow down temperature"""
+        slow_down_temperature = pynvml.nvmlSlow
+
+    def get_target_temperature(self, handle):
+        """Method used to get target temeprature of GPU"""
+        target_temperature = pynvml.nvmlDeviceGetTemperatureThreshold(handle)
+
+        return target_temperature
+    
+    def get_firmware_version(self, handle):
+        """Method used to firmware version from GPU"""
+        firmware_version = pynvml.nvmlDeviceGetGspFirmwareVersion(handle)
+
+        return firmware_version
+
     def get_clock_info(self, handle):
         """Method used to get clock info"""
         clock_info = pynvml.nvmlDeviceGetClockInfo(handle, pynvml.NVML_CLOCK_GRAPHICS)
 
         return clock_info / 1000.0
 
+    def get_gpu_multiinstance(self, handle):
+        """Method used to check if GPU MIG is enabled"""
+        mig_state = pynvml.nvmlDeviceGetMigMode(handle)
+
+        return mig_state
     
     
     def get_fan_speed(self, handle):
@@ -79,7 +157,7 @@ class Nvidia():
         device_count = self.get_device_count()
         handles= list()
         for i in range(device_count):
-                handles.append(self.nvidia_instance.nvmlUnitGetHandleByIndex(i))
+                handles.append(pynvml.nvmlUnitGetHandleByIndex(i))
         return handles
 
     def get_temperature(self, handle):

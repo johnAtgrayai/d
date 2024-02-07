@@ -1,5 +1,5 @@
 import argparse
-from gpu_devices.nvidia_gpu import Nvidia
+from gpu_devices.gpu_wrappers.nvidia_gpu import Nvidia
 
 
 
