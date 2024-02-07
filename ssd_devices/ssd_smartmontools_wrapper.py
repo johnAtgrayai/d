@@ -4,25 +4,29 @@ import platform
 import subprocess
 
 # Local Imports
-from ssd_devices.constants import *
+
 
 class SmartMonTools:
     """Class used automate running SmartMonTools"""
 
 
-    def __init__(self, path_to_json):
+    def __init__(self, path_to_json=None):
         """Constructor"""
         self.path_to_json = path_to_json
         self.config = None
         # Read JSON File
-        with open(self.path_to_json, mode="r", encoding="utf-8") as json_config:
-             self.config = json.load(json_config)
-        self.storage_device = self.config[SSD][SSD_DEVICE]
+        # with open(self.path_to_json, mode="r", encoding="utf-8") as json_config:
+        #      self.config = json.load(json_config)
+        # self.storage_device = self.config[SSD][SSD_DEVICE]
         
     def get_overall_smart_test_status(self):
         """Method used to run SMART test of storage device"""
-        cmd_output = subprocess.run(f"smartctl -H {self.storage_device}")
-        storage_device_overall_health = cmd_output.stdout
+        result_regex = 
+        cmd_output = subprocess.run(f"smartctl -H /dev/sda")
+        output = cmd_output.stdout
+        data = output.split(" ")
+        result = data[:]
+
 
         return storage_device_overall_health
     
@@ -40,3 +44,10 @@ class SmartMonTools:
     
     def get_all_reallocation_events(self):
         """Method used to gather all reallocation events on SSD"""
+
+
+if __name__ == """__main__""":
+
+    smartctl = SmartMonTools()
+    output = smartctl.get_overall_smart_test_status()
+    print(output)
