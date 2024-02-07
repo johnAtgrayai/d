@@ -18,6 +18,7 @@ class NvidiaPoller:
     def __init__(self):
         """Constructor"""
         self.nvidia = Nvidia()
+        self.handles = self.nvidia.get_handles()
 
 
     def collect_gpu_diagnostic_data(self):
@@ -28,7 +29,7 @@ class NvidiaPoller:
             ecc_counts = self.nvidia.get_gpu_ecc_errors(handle_n)
             total_memory, free_memory, used_memory = self.nvidia.get_gpu_video_memory_info(handle_n)
             
-        return clock_info, temperature, ecc_counts, total_memory, free_memory, used_memory
+        return handle_n, clock_info, temperature, ecc_counts, total_memory, free_memory, used_memory
 
 
 

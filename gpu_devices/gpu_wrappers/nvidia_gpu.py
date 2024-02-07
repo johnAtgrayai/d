@@ -52,19 +52,20 @@ class Nvidia():
         nvlink_power_threshold = pynvml.nvmlDeviceSetNvLinkDeviceLowPowerThreshold(handle)
 
         return nvlink_power_threshold
+
     
-    def get_processes_from_gpu(self, handle):
+    def get_process_count_from_gpu(self, handle):
         """Method used to get process info from GPU"""
         process_count = pynvml.nvmlDeviceGetComputeRunningProcesses_v3(handle)
+        
+        
+        return process_count
+    
+    def get_process_utilization(self, handle):
+        """Method used to get process utilization"""
+        process_utilization = pynvml.nvmlDeviceGetProcessUtilization(handle)
 
-        for process in range(process_count):
-            process = pynvml.nvmlProc
-            process_dict = {
-                'GPU Index': process.index,
-                'Process ID': process.pid,
-                'Process Name': process.name.decode('utf-8'),
-                'Used Memory': process.usedGpuMemory
-            }
+        return process_utilization
 
     def get_driver_version():
         """Getter method used to get driver version"""
@@ -156,7 +157,7 @@ class Nvidia():
         device_count = self.get_device_count()
         handles= list()
         for i in range(device_count):
-                handles.append(self.nvidia_instance.nvmlUnitGetHandleByIndex(i))
+                handles.append(pynvml.nvmlUnitGetHandleByIndex(i))
         return handles
 
     def get_temperature(self, handle):
