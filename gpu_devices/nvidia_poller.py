@@ -6,7 +6,7 @@ import time
 import pandas as pd
 
 # Local Imports
-from gpu_devices.nvidia_gpu import Nvidia
+from gpu_devices.gpu_wrappers.nvidia_gpu import Nvidia
 
 
 format = "%(asctime)s: %(message)s"
@@ -26,9 +26,9 @@ class NvidiaPoller:
             clock_info = self.nvidia.get_clock_info(handle_n)
             temperature = self.nvidia.get_temperature(handle_n)
             ecc_counts = self.nvidia.get_gpu_ecc_errors(handle_n)
-            total_memory, free_memory, used_memory = self.nvidia.get_memory_info(handle_n)
+            total_memory, free_memory, used_memory = self.nvidia.get_gpu_video_memory_info(handle_n)
             
-        return 
+        return clock_info, temperature, ecc_counts, total_memory, free_memory, used_memory
 
 
 

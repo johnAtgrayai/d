@@ -5,7 +5,7 @@ import os
 import pandas as pd
 
 # Local Imports
-from gpu_devices.nvidia_gpu import Nvidia
+from gpu_devices.gpu_wrappers.nvidia_gpu import Nvidia
 
 
 class GPUDiagnostics:

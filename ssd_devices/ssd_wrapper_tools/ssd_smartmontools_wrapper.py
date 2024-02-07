@@ -21,26 +21,21 @@ class SmartMonTools:
         
     def get_overall_smart_test_status(self):
         """Method used to run SMART test of storage device"""
-        result_regex = 
         cmd_output = subprocess.run(f"smartctl -H /dev/sda")
         output = cmd_output.stdout
         data = output.split(" ")
-        result = data[:]
+        storage_device_overall_health = data[5]
 
 
         return storage_device_overall_health
     
     def get_all_wear_leveling(self):
         """Method used to get all wear leveling"""
-        
-        cmd_output = subprocess.run(f"smartctl -a {self.storage_device}")
+        cmd_output = subprocess.run(f"smartctl -a /dev/sda")
         ssd_smart_data = cmd_output.stdout
         
         return ssd_smart_data
 
-    def run_self_test(self):
-        """Method used to run self test on storage device"""
-        cmd_ouput = subprocess.run(f"smartctl ")
     
     def get_all_reallocation_events(self):
         """Method used to gather all reallocation events on SSD"""
