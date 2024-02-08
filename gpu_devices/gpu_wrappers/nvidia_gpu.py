@@ -79,7 +79,6 @@ class Nvidia():
 
         return frame_buffer_stats
     
-    pynvml.nvmlDeviceGetFBCSessions
     
     def get_led_state(self, handle):
         """Get LED state of from the GPU"""

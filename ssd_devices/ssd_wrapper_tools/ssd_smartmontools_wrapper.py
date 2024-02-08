@@ -23,17 +23,19 @@ class SmartMonTools:
         """Method used to run SMART test of storage device"""
         cmd_output = subprocess.run(f"smartctl -H /dev/sda")
         output = cmd_output.stdout
-        data = output.split(" ")
-        storage_device_overall_health = data[5]
+       
+        #storage_device_overall_health = data[5]
 
 
-        return storage_device_overall_health
+        #return storage_device_overall_health
     
     def get_all_wear_leveling(self):
         """Method used to get all wear leveling"""
-        cmd_output = subprocess.run(f"smartctl -a /dev/sda")
-        ssd_smart_data = cmd_output.stdout
+        cmd_output = subprocess.run(f"smartctl -a /dev/sda", capture_output=True)
+        ssd_smart_data = cmd_output.stdout.decode("utf-8")
+        output = ssd_smart_data.split("\r\n")
         
+        print(output)
         return ssd_smart_data
 
     
@@ -44,5 +46,5 @@ class SmartMonTools:
 if __name__ == """__main__""":
 
     smartctl = SmartMonTools()
-    output = smartctl.get_overall_smart_test_status()
-    print(output)
+    smartctl.get_all_wear_leveling()
+   
