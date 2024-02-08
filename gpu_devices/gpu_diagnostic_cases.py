@@ -36,7 +36,9 @@ class GPUDiagnostics:
         return temperature, utilization, power_consumption
     
    
-
+    def monitor_frame_buffer(self, handle):
+         """Method used to check frame buffer when XID error is encountered"""
+         
                 
 
     

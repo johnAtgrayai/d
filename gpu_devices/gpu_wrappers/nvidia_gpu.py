@@ -66,6 +66,24 @@ class Nvidia():
         process_utilization = pynvml.nvmlDeviceGetProcessUtilization(handle)
 
         return process_utilization
+    
+    def get_frame_buffer_usage(self, handle):
+        """Method used to get frame buffer"""
+        frame_buffer_counter = pynvml.nvmlVgpuInstanceGetFbUsage(handle)
+
+        return frame_buffer_counter
+    
+    def get_frame_buffer_capture_stats(self, handle):
+        """Method used to get frame buffer stats"""
+        frame_buffer_stats = pynvml.nvmlDeviceGetFBCStats(handle)
+
+        return frame_buffer_stats
+    
+    pynvml.nvmlDeviceGetFBCSessions
+    
+    def get_led_state(self, handle):
+        """Get LED state of from the GPU"""
+        xid_errors = pynvml.nvmlUnitGetLedState
 
     def get_driver_version():
         """Getter method used to get driver version"""
