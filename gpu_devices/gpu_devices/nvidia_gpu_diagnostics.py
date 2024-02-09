@@ -1,5 +1,5 @@
 # Local Imports
-from gpu_devices.gpu_wrappers.nvidia_gpu import Nvidia
+from gpu_wrappers.nvidia_gpu import Nvidia
 
 
 class NvidiaDiagnostics:
