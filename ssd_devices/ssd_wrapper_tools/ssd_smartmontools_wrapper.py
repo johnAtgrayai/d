@@ -2,6 +2,7 @@ import json
 import os
 import platform
 import subprocess
+import re
 
 # Local Imports
 
@@ -21,30 +22,35 @@ class SmartMonTools:
         
     def get_overall_smart_test_status(self):
         """Method used to run SMART test of storage device"""
-        cmd_output = subprocess.run(f"smartctl -H /dev/sda")
-        output = cmd_output.stdout
-       
-        #storage_device_overall_health = data[5]
+        smart_test_regex_pass= r"\bPASSED\b"
+        smart_test_regex_fail = r"\bFAILED\b"
+        cmd_output = subprocess.run(f"smartctl -H /dev/sda", capture_output=True)
+        output = cmd_output.stdout.decode("utf-8")
+        result_passed_match = re.search(pattern=smart_test_regex_pass, string=output)
+        result_failed_match = re.search(pattern=smart_test_regex_fail, string=output)
+        if result_passed_match or result_failed_match:
+            smart_test_result = match.group()
+        else:
+            smart_test_result = ""
 
-
-        #return storage_device_overall_health
-    
-    def get_all_wear_leveling(self):
-        """Method used to get all wear leveling"""
-        cmd_output = subprocess.run(f"smartctl -a /dev/sda", capture_output=True)
-        ssd_smart_data = cmd_output.stdout.decode("utf-8")
-        output = ssd_smart_data.split("\r\n")
+        return smart_test_result
         
-        print(output)
-        return ssd_smart_data
-
     
-    def get_all_reallocation_events(self):
-        """Method used to gather all reallocation events on SSD"""
+    def get_ssd_serial_number(self):
+        """Method used to get all wear leveling"""
+        serial_number_regex = r"\d{2}\w{8}\d{2}" 
+        cmd_output = subprocess.run(f"smartctl -a /dev/sda", capture_output=True)
+        ssd_diagnostic_telemetry = cmd_output.stdout.decode("utf-8")
+        match = re.search(pattern=serial_number_regex, string=ssd_diagnostic_telemetry)
+        serial_number = match.group()
+
+        return serial_number 
+
 
 
 if __name__ == """__main__""":
 
     smartctl = SmartMonTools()
-    smartctl.get_all_wear_leveling()
+    serial_number = smartctl.get_overall_smart_test_status()
+    print(serial_number)
    

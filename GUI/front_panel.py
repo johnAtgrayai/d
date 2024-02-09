@@ -42,7 +42,7 @@ class FrontPanel(QWidget):
         self.gpu_frame_buffer_usage = QPushButton("Frame Buffer Usage")
         self.gpu_diagnostics_tab.addWidget(self.gpu_load_utilization)
         self.gpu_diagnostics_tab.addWidget(self.gpu_frame_buffer_usage)
-
+        
         main_layout.addWidget(self.tabs)
         self.setLayout(main_layout)
 
