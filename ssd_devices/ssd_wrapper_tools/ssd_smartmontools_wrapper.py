@@ -22,14 +22,16 @@ class SmartMonTools:
         
     def get_overall_smart_test_status(self):
         """Method used to run SMART test of storage device"""
-        smart_test_regex_pass= r"\bPASSED\b"
-        smart_test_regex_fail = r"\bFAILED\b"
+        smart_test_regex_pass= r"\bpassed\b"
+        smart_test_regex_fail = r"\bfailed\b"
         cmd_output = subprocess.run(f"smartctl -H /dev/sda", capture_output=True)
         output = cmd_output.stdout.decode("utf-8")
-        result_passed_match = re.search(pattern=smart_test_regex_pass, string=output)
-        result_failed_match = re.search(pattern=smart_test_regex_fail, string=output)
-        if result_passed_match or result_failed_match:
-            smart_test_result = match.group()
+        result_passed_match = re.search(pattern=smart_test_regex_pass, string=output, flags=re.IGNORECASE)
+        result_failed_match = re.search(pattern=smart_test_regex_fail, string=output, flags=re.IGNORECASE)
+        if result_passed_match:
+            smart_test_result = result_passed_match.group()
+        elif result_failed_match:
+            smart_test_result = result_failed_match.group()
         else:
             smart_test_result = ""
 
