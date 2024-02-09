@@ -33,7 +33,7 @@ class SmartMonTools:
         elif result_failed_match:
             smart_test_result = result_failed_match.group()
         else:
-            smart_test_result = ""
+            smart_test_result = "Could not determine outcome of test!"
 
         return smart_test_result
         
@@ -48,6 +48,11 @@ class SmartMonTools:
 
         return serial_number 
 
+    def run_smart_test(self):
+        """Method used to run SMART test of desired duration"""
+        cmd_output = subprocess.run(f"smartctl -t long /dev/sda", capture_output=True)
+        smart_test_telemetry = cmd_output.stdout.decode("utf-8")
+        print()
 
 
 if __name__ == """__main__""":
