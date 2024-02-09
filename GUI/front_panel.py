@@ -16,10 +16,11 @@ class GPUDiagnosticsThread(QRunnable):
     def __init__(self):
         """Constructor"""
         super().__init__()
-        self.nvidia_diag = NvidiaDiagnostics()
+       
     
     def run(self):
-        gpu_diag_routine = Nvi
+        gpu_diag_routine = NvidiaDiagnostics()
+        gpu_diag_routine.gpu_diagnostics()
 
 class FrontPanel(QWidget):
     """Class used for front panel"""
@@ -65,7 +66,8 @@ class FrontPanel(QWidget):
 
     def on_run_gpu_diagnostics(self):
         """Event handler for running GPU Diagnostics"""
-        gpu_diagnostics_thread = 
+        gpu_diagnostics_thread = GPUDiagnosticsThread()
+        self.thread_pool.start(gpu_diagnostics_thread)
 
 app = QApplication(sys.argv)
 window = FrontPanel()
