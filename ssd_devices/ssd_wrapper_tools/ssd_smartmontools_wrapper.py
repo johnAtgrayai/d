@@ -47,6 +47,22 @@ class SmartMonTools:
         serial_number = match.group()
 
         return serial_number 
+    
+    def pull_diagnostic_telemetry(self):
+        """Method used to get diagnostic telemetry"""
+        ssd_telemetry_output = subprocess.run(f"smartctl -a /dev/sda", capture_output=True)
+        ssd_telemetry_output = ssd_telemetry_output.stdout.decode("utf-8")
+
+        return ssd_telemetry_output
+
+
+    def get_ssd_temperature(self):
+        """Method used get temperature from SSD"""
+        ssd_temperature_regex = r"[0-9][0-9]\bmodel number\b"
+        ssd_diagnostic_telemetry = self.pull_diagnostic_telemetry()
+        match = re.search(pattern=ssd_temperature_regex, string=ssd_diagnostic_telemetry)
+
+        
 
     def run_smart_test(self):
         """Method used to run SMART test of desired duration"""
