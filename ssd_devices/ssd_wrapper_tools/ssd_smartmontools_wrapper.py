@@ -66,6 +66,15 @@ class SmartMonTools:
         else:
             print("Could not read out temperature!")
 
+    def get_ssd_model_number(self):
+        """Method used to get ssd model number"""
+        ssd_model_regex = r"\bModel Number\b\s+"
+        ssd_diagnostic_telemetry = self.pull_diagnostic_telemetry()
+        match = re.search(pattern=ssd_model_regex, string=ssd_diagnostic_telemetry)
+        if match:
+            return match.group()
+        else:
+            print("Could not read model number")
 
     def run_smart_test(self):
         """Method used to run SMART test of desired duration"""
@@ -77,6 +86,6 @@ class SmartMonTools:
 if __name__ == """__main__""":
 
     smartctl = SmartMonTools()
-    smartctl.get_ssd_temperature()
+    smartctl.get_ssd_model_number()
     
    
